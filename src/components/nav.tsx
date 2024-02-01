@@ -19,6 +19,12 @@ export function Nav() {
         >
           Approval Requests
         </Link>
+        <Link
+          className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline"
+          href="#"
+        >
+          Attendance
+        </Link>
       </nav>
       <Button className="hidden md:flex" variant="outline">
         Logout
