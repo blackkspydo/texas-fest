@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 
 export default function Component() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-md p-6 bg-white rounded-md shadow-md dark:bg-gray-800">
+    <div className="flex flex-col items-center justify-center absolute dark:bg-gray-900 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="w-full max-w-md flex-shrink-0 p-6 bg-white rounded-md shadow-md dark:bg-gray-800">
         <h1 className="text-2xl font-bold text-center mb-4">Status Check</h1>
         <div className="space-y-4">
           <div className="space-y-2">

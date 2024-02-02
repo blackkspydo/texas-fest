@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 export function EventRegistration() {
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl mt-[50px] space-y-6">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Register for Event</h1>
         <p className="text-gray-500 dark:text-gray-400">Enter your information to register for the event</p>
