@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+const FIELDS ={
+  
+}
 
 export function EventRegistration() {
   return (
@@ -36,7 +39,7 @@ export function EventRegistration() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="faculty">Faculty</Label>
-          <Select>
+          <Select disabled>
             <SelectTrigger id="faculty">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
