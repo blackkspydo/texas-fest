@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { clearToken } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 export function Nav() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const handleLogout = () => {
+    setLoading(true);
+    clearToken();
+    setLoading(false);
+    router.replace("/");
+  };
   return (
     <header className="flex items-center justify-between px-4 py-4 shadow-md bg-white dark:bg-gray-800">
       <Link className="flex items-center" href="#">
@@ -22,7 +33,9 @@ export function Nav() {
           Attendance
         </Link>
       </nav>
-      <Button className="hidden md:flex" variant="outline">
+      <Button className="hidden md:flex" variant="outline" onClick={handleLogout}
+        loading={loading}
+      >
         Logout
       </Button>
     </header>
