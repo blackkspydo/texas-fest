@@ -5,17 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { backendClient } from "@/lib/config";
 import { getToken, setToken } from "@/lib/utils";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
-import { ReloadIcon } from "@radix-ui/react-icons";
 export function Login() {
   const [loginInfo, setLoginInfo] = useState({
     userName: "",
     password: ""
   });
   const [loading, setLoading] = useState(false);
-
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -34,6 +31,7 @@ export function Login() {
       });
     }
   };
+
   if (getToken()?.length) {
     redirect("/dashboard");
   }
