@@ -21,7 +21,6 @@ export function Login() {
     setLoading(false);
     if (response.status === 200) {
       setToken(response.data.accessToken);
-      return redirect("/dashboard");
     } else {
       toast({
         title: "Error",
