@@ -2,10 +2,10 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { backendClient } from "@/lib/config";
 import { getToken, setToken } from "@/lib/utils";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 export function Login() {
   const [loginInfo, setLoginInfo] = useState({
@@ -13,14 +13,18 @@ export function Login() {
     password: ""
   });
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
-    const response = await backendClient.post("/admin/login", loginInfo);
+    const response = await backendClient.post("/admin/login", {
+      userName: loginInfo.userName.trim(),
+      password: loginInfo.password.trim()
+    });
     setLoading(false);
     if (response.status === 200) {
       setToken(response.data.accessToken);
+      router.push("/dashboard");
     } else {
       toast({
         title: "Error",
@@ -31,9 +35,11 @@ export function Login() {
     }
   };
 
-  if (getToken()?.length) {
-    redirect("/dashboard");
-  }
+  useEffect(() => {
+    if (getToken()) {
+      router.push("/dashboard");
+    }
+  }, []);
 
   return (
     <div className="flex flex-col bg-white w-full h-full fixed top-1/2 left-1/2 dark:bg-gray-900 justify-center items-center transform -translate-x-1/2 -translate-y-1/2">

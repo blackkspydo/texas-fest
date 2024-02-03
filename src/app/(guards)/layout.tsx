@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { Nav } from "@/components/nav";
 import { Toaster } from "@/components/ui/toaster";
 import { getToken } from "@/lib/utils";
@@ -8,15 +8,18 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const checkIfLoggedIn = () => {
+    if (typeof window === "undefined") return false;
     const token = getToken();
     if (!token) {
       return false;
     }
     return true;
   };
+
   if (!checkIfLoggedIn()) {
-    return redirect("/");
+    redirect("/");
   }
+
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

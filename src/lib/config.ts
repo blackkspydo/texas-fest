@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "./utils";
 
 const backendClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL!
@@ -6,7 +7,7 @@ const backendClient = axios.create({
 
 backendClient.interceptors.request.use(async function (config) {
   try {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token}`

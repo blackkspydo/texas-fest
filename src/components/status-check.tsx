@@ -46,8 +46,8 @@ export function StatusCheck() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md min-h-[270px]">
         <DialogHeader>
-          <DialogTitle>Check Your Team's Status</DialogTitle>
-          <DialogDescription>Input your teamID below to check your team's status.</DialogDescription>
+          <DialogTitle>Check Your Team&apos;s Status</DialogTitle>
+          <DialogDescription>Input your teamID below to check your team&apos;s status.</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-5 space-y-2">
           <div className="flex flex-col w-full items-start gap-1 space-y-2">
