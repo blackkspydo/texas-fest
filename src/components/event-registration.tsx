@@ -5,6 +5,11 @@ import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { Form, FormField } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { uploadFile } from "@/lib/repositories/member";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 const FIELDS = {
   bachelorPrograms: [
     {
@@ -45,7 +50,6 @@ const FIELDS = {
     }
   ],
   intermediateFaculties: [
-    // sci , management, humanities and law
     {
       label: "Science",
       value: "Science"
@@ -108,10 +112,6 @@ const FIELDS = {
     }
   ]
 };
-import { useForm } from "react-hook-form";
-import { Form, FormField } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
 
 const FormSchema = z.object({
   teamName: z.string({
@@ -182,9 +182,6 @@ export function EventRegistration() {
 
   const level = form.watch("level");
 
-  useEffect(() => {
-    console.log(form.getValues());
-  }, [form]);
   const levelOptions = [
     { label: "Bachelors", value: "Bachelors" },
     { label: "Intermediate", value: "Intermediate" }
@@ -192,6 +189,22 @@ export function EventRegistration() {
 
   const facultyOptions = level === "Bachelors" ? FIELDS.bachelorPrograms : FIELDS.intermediateFaculties;
   const semesterOptions = level === "Bachelors" ? FIELDS.bachelorSemesters : FIELDS.intermediateClasses;
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: any) => {
+    if (e.target.files?.length === 0) return;
+    const file = e.target.files![0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await uploadFile(formData);
+        form.setValue(fieldName, res.data.url);
+        console.log(form.getValues());
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
+  };
 
   return (
     <div className="mx-auto px-5 max-w-2xl mt-[50px] space-y-6">
@@ -331,7 +344,6 @@ export function EventRegistration() {
                 </div>
               )}
             />
-            {/* img */}
             <FormField
               control={form.control}
               name={`member1Img`}
@@ -339,15 +351,22 @@ export function EventRegistration() {
                 <div className="flex flex-col items-start gap-5">
                   <Label htmlFor="member-img-1">Member 1 Image</Label>
                   <Input
-                    {...field}
-                    id="member-img-1"
-                    onChange={(e) => {
-                      console.log(e.target.files![0]);
-                      field.onChange(e.target.files![0]);
-                    }}
+                    onChange={(e) => handleFileUpload(e, "member1Img")}
                     type="file"
                     required
                     className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member1Img} alt="member1" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member1Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-1"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
                   />
                 </div>
               )}
@@ -366,11 +385,28 @@ export function EventRegistration() {
             />
             <FormField
               control={form.control}
-              name="member2Img"
+              name={`member2Img`}
               render={({ field }) => (
                 <div className="flex flex-col items-start gap-5">
-                  <Label htmlFor="member-img-2">Member 2 Image</Label>
-                  <Input {...field} id="member-img-2" type="file" className="w-[calc(100%-1rem)]" />
+                  <Label htmlFor="member-img21">Member 1 Image</Label>
+                  <Input
+                    onChange={(e) => handleFileUpload(e, "member2Img")}
+                    type="file"
+                    required
+                    className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member2Img} alt="member2" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member2Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-2"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
+                  />
                 </div>
               )}
             />
@@ -389,11 +425,28 @@ export function EventRegistration() {
             {/* img */}
             <FormField
               control={form.control}
-              name="member3Img"
+              name={`member3Img`}
               render={({ field }) => (
                 <div className="flex flex-col items-start gap-5">
                   <Label htmlFor="member-img-3">Member 3 Image</Label>
-                  <Input {...field} id="member-img-3" type="file" className="w-[calc(100%-1rem)]" />
+                  <Input
+                    onChange={(e) => handleFileUpload(e, "member3Img")}
+                    type="file"
+                    required
+                    className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member3Img} alt="member3" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member3Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-3"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
+                  />
                 </div>
               )}
             />
@@ -409,14 +462,30 @@ export function EventRegistration() {
                 </div>
               )}
             />
-            {/* img */}
             <FormField
               control={form.control}
-              name="member4Img"
+              name={`member4Img`}
               render={({ field }) => (
                 <div className="flex flex-col items-start gap-5">
                   <Label htmlFor="member-img-4">Member 4 Image</Label>
-                  <Input {...field} id="member-img-4" type="file" className="w-[calc(100%-1rem)]" />
+                  <Input
+                    onChange={(e) => handleFileUpload(e, "member4Img")}
+                    type="file"
+                    required
+                    className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member4Img} alt="member4" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member4Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-4"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
+                  />
                 </div>
               )}
             />
@@ -432,14 +501,30 @@ export function EventRegistration() {
                 </div>
               )}
             />
-            {/* img */}
             <FormField
               control={form.control}
-              name="member5Img"
+              name={`member5Img`}
               render={({ field }) => (
                 <div className="flex flex-col items-start gap-5">
-                  <Label htmlFor="member-img-5">Member 5 Image</Label>
-                  <Input {...field} id="member-img-5" type="file" className="w-[calc(100%-1rem)]" />
+                  <Label htmlFor="member-img-1">Member 5 Image</Label>
+                  <Input
+                    onChange={(e) => handleFileUpload(e, "member5img")}
+                    type="file"
+                    required
+                    className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member5Img} alt="member5" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member5Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-5"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
+                  />
                 </div>
               )}
             />
@@ -455,14 +540,30 @@ export function EventRegistration() {
                 </div>
               )}
             />
-            {/* img */}
             <FormField
               control={form.control}
-              name="member6Img"
+              name={`member6Img`}
               render={({ field }) => (
                 <div className="flex flex-col items-start gap-5">
-                  <Label htmlFor="member-img-6">Member 6 Image</Label>
-                  <Input {...field} id="member-img-6" type="file" className="w-[calc(100%-1rem)]" />
+                  <Label htmlFor="member-img-1">Member 6 Image</Label>
+                  <Input
+                    onChange={(e) => handleFileUpload(e, "member6Img")}
+                    type="file"
+                    required
+                    className="w-[calc(100%-1rem)]"
+                  />
+                  <Avatar>
+                    <AvatarImage src={form.getValues().member6Img} alt="member6" className="w-20 h-20 object-cover" />
+                    <AvatarFallback className="w-20 h-20">{form.getValues().member6Img ? null : ""}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    {...field}
+                    id="member-img-6"
+                    type="text"
+                    hidden={true}
+                    required
+                    className="hidden w-[calc(100%-1rem)]"
+                  />
                 </div>
               )}
             />

@@ -29,7 +29,7 @@ export function Nav() {
         >
           Approval Requests
         </Link>
-        <Link className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline" href="#">
+        <Link className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline" href="/attendance">
           Attendance
         </Link>
       </nav>

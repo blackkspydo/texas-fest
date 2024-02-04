@@ -7,32 +7,42 @@ import { backendClient } from "@/lib/config";
 import { getToken, setToken } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { useMutate } from "@/lib/hooks/useMutate";
+
 export function Login() {
   const [loginInfo, setLoginInfo] = useState({
     userName: "",
     password: ""
   });
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { handleMutate, isLoading } = useMutate({
+    mutationFn: async () => {
+      return await backendClient.post("/admin/login", {
+        userName: loginInfo.userName.trim(),
+        password: loginInfo.password.trim()
+      });
+    },
+    options: {
+      onSuccess: (response) => {
+        setToken(response.data.accessToken);
+        router.push("/dashboard");
+      },
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: "Invalid username or password",
+          duration: 3000,
+          variant: "destructive"
+        });
+      }
+    }
+  });
   const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setLoading(true);
-    const response = await backendClient.post("/admin/login", {
+    handleMutate({
       userName: loginInfo.userName.trim(),
       password: loginInfo.password.trim()
     });
-    setLoading(false);
-    if (response.status === 200) {
-      setToken(response.data.accessToken);
-      router.push("/dashboard");
-    } else {
-      toast({
-        title: "Error",
-        description: "Invalid username or password",
-        duration: 3000,
-        variant: "destructive"
-      });
-    }
   };
 
   useEffect(() => {
@@ -75,7 +85,7 @@ export function Login() {
           <Button
             className="w-full  text-white font-bold py-2 px-4 rounded"
             onClick={handleLogin}
-            loading={loading}
+            loading={isLoading}
             variant="default"
           >
             Login

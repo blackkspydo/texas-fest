@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function setToken(token: string) {
+  if (!token) return;
   localStorage.setItem("token", token);
 }
 
